@@ -1,0 +1,93 @@
+import json
+import requests
+import time
+class VCSTimer:
+    def __init__(self):
+        with open("config.json") as config_file:
+            self._config = json.load(config_file)
+        self.load_config()
+        self.live = ""
+        self.dragon = {"timer": "", "type": "None"}
+        self.baron = {"timer": ""}
+        self.gold = {"blue": "2.5k","red":"2.5k"}
+        
+    def load_config(self):
+        self.ip = self._config["OBS_IP"]
+        self.url = "http://"+self.ip+":"
+        self.replay = self._config["Ingame_Replay_Port"]
+        self.ocr = self._config["Ingame_OCR_Port"]
+        self.dragon = self._config["Dragon_Path"]
+    
+    def convertLoLTime(self,sec):
+        timer = ""
+        m, s = divmod(sec, 60)
+        m = int(m)
+        s = int(s)
+        if (m<10):
+            timer += "0"
+            timer += str(m)
+        else:
+            timer += str(m)
+        timer += ":"
+        if (s<10):
+            timer += "0"
+            timer += str(s)
+        else:
+            timer += str(s)
+        return timer
+        
+    def getTimeLive(self):
+        try:
+            rp = requests.get(self.url+self.replay+"/replay/playback", verify=False, timeout=1)
+        except:
+            self.live = "00:00"
+            return
+        if (rp.status_code!=200):
+            return
+        data = rp.json() 
+        self.live = self.convertLoLTime(data["time"])
+        
+    def getGold(self):
+        try:
+            rp = requests.get(self.url+self.ocr+"/api/teams", verify=False, timeout=1)
+        except:
+            self.gold = {"blue": "2.5k","red":"2.5k"}
+            return
+        if (rp.status_code!=200):
+            return
+        data = rp.json() 
+        self.gold["blue"] = str(data[0]["Gold"]/1000)+"k"
+        self.gold["red"] = str(data[1]["Gold"]/1000)+"k"
+        
+    def getTimeObject(self):
+        try:
+            rp = requests.get(self.url+self.ocr+"/api/objectives", verify=False, timeout=1)
+        except:
+            self.dragon = {"timer": "00:00", "type": "None"}
+            self.baron = {"timer": "00:00"}
+            return
+        if (rp.status_code!=200):
+            return
+        data = rp.json()
+        if (data[0]["Cooldown"] <= 300):
+            if (data[0]["IsAlive"]):
+                self.dragon["timer"] = "LIVE"
+            else:
+                self.dragon["timer"] = self.convertLoLTime(data[0]["Cooldown"])
+            self.dragon["type"] = self.dragon + data[0]["Type"] + ".PNG"
+            
+        if (data[1]["Cooldown"] <= 300):            
+            if (data[1]["IsAlive"]):
+                self.baron["timer"] = "LIVE"
+            else:
+                self.baron["timer"] = self.convertLoLTime(data[1]["Cooldown"])
+            
+    def crawlData(self):
+        while True:
+            self.getTimeLive()
+            self.getGold()
+            self.getTimeObject()
+            print(self.dragon)
+
+Time = VCSTimer()
+Time.crawlData()

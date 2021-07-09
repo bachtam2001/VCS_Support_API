@@ -1,0 +1,18 @@
+{
+	"OBS_IP" : "127.0.0.1",
+	"Ingame_Replay_Port" : "3000",
+	"Ingame_Event_Port" : "34243",
+	"Ingame_OCR_Port" : "3002",
+	"Banpick_Port" : "8999",	
+	"Vmix_IP" : "127.0.0.1",
+	"Vmix_Port" : "8088",
+	"Ban_Animation" : "D:/2021_VCS_SUMMER/XAML/Banpick New/Animation/BAN/",
+	"Ban_Line" : "D:/2021_VCS_SUMMER/XAML/Banpick New/Animation/Line/",
+	"State_Arrow" : "D:/2021_VCS_SUMMER/XAML/Banpick New/Animation/Arrow/",
+	"Pick_Animation" : "D:/2021_VCS_SUMMER/XAML/Banpick New/Animation/PICK/",
+	"Champ_Center" : "D:/2021_VCS_SUMMER/Champion Centered/",
+	"Champ_Loading" : "D:/2021_VCS_SUMMER/Champion Loading/",
+	"Champ_Square" : "D:/2021_VCS_SUMMER/Champion Square/",
+	"Dragon_Icon" : "D:/2021_VCS_SUMMER/XAML/Ingame/Dragon/",
+	"Dragon_Path" : "D:/2021_VCS_SUMMER/XAML/Timers/Dragon/"
+}
