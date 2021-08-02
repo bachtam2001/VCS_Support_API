@@ -4,5 +4,5 @@
 
 /.vs
 /VCSProject/env
-/run.bat
-/Document.py
+run.bat
+__pycache__/

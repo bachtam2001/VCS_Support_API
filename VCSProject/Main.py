@@ -14,8 +14,7 @@ Ingame = VCSIngame()
 
 let = threading.Thread(target=Ingame.start)
 let.start() 
-timet = threading.Thread(target=Ingame.Timer.crawlData)
-timet.start() 
+Ingame.Timer.crawlData()
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
